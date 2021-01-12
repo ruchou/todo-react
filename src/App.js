@@ -24,6 +24,7 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks);
   const [filter, setFilter] = useState('All');
+  const [url,setUrl] = useState("");
 
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map(task => {
@@ -85,6 +86,11 @@ function App(props) {
     setTasks([...tasks, newTask]);
   }
 
+  function sendUrl(url){
+    fetch(url)
+        .then(r=>r.text())
+        .then(r=>setUrl(r));
+  }
 
   const tasksNoun = taskList.length !== 1 ? 'tasks' : 'task';
   const headingText = `${taskList.length} ${tasksNoun} remaining`;
@@ -100,7 +106,10 @@ function App(props) {
 
   return (
     <div className="todoapp stack-large">
-      <Form addTask={addTask} />
+      <Form addTask={addTask} sendUrl={sendUrl}/>
+      <div>
+        {url}
+      </div>
       <div className="filters btn-group stack-exception">
         {filterList}
       </div>
